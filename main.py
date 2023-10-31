@@ -10,6 +10,11 @@ def create_list():
         list = f.readlines()
     return list
 
+def replace_text(before_text):
+    replace_name = before_text
+    replaced_name = re.sub(':| |Version|Requires Jenkins', '', replace_name)
+    return replaced_name
+
 def parse_jenkins_plugin(list: list):
     plugin_list = list
     for plugin in plugin_list:
@@ -21,9 +26,9 @@ def parse_jenkins_plugin(list: list):
         requires_version = soup.find('div', class_="col-md-3 sidebar")
         for i in requires_version:
             if re.match('Version', i.text):
-                plugin_version = i.text.replace('Version', '').replace(' ', '').replace(':', '')
+                plugin_version = replace_text(i.text)
             if re.match('Requires Jenkins', i.text):
-                jenkins_version = i.text.replace('Requires Jenkins', '').replace(' ', '')
+                jenkins_version = replace_text(i.text)
         print(plugin_name + ", " + plugin_version + ", " + jenkins_version)
         time.sleep(0.5)
 
