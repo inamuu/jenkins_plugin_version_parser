@@ -29,7 +29,12 @@ def parse_jenkins_plugin(list: list):
                 plugin_version = replace_text(i.text)
             if re.match('Requires Jenkins', i.text):
                 jenkins_version = replace_text(i.text)
-        print(plugin_name + ", " + plugin_version + ", " + jenkins_version)
+        alert = soup.find(class_="alert alert-warning alert-with-icon")
+        if alert is None:
+            deprecated_text = 'Not deprecated'
+        else:
+            deprecated_text = 'Deprecated'
+        print(plugin_name + ", " + plugin_version + ", " + jenkins_version + ", " + deprecated_text)
         time.sleep(0.5)
 
 def main():
